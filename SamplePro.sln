@@ -5,17 +5,19 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D38661D8-796B-4E6A-AEFF-659E22C4B35C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Site.EndPoint", "Site.EndPoint\Site.EndPoint.csproj", "{492E9736-1ADC-44EE-BFEE-6DE4F20EF568}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site.EndPoint", "Site.EndPoint\Site.EndPoint.csproj", "{492E9736-1ADC-44EE-BFEE-6DE4F20EF568}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Site.Common", "Site.Common\Site.Common.csproj", "{1EFB980B-3C7A-4716-863D-AF85111DDFCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site.Common", "Site.Common\Site.Common.csproj", "{1EFB980B-3C7A-4716-863D-AF85111DDFCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Site.Application", "Site.Application\Site.Application.csproj", "{14D2078F-587B-409A-9DDE-CB75C21380EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site.Application", "Site.Application\Site.Application.csproj", "{14D2078F-587B-409A-9DDE-CB75C21380EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Site.Domain", "Site.Domain\Site.Domain.csproj", "{ABF6D73E-F2D2-4685-98CA-F6FC5975DC81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site.Domain", "Site.Domain\Site.Domain.csproj", "{ABF6D73E-F2D2-4685-98CA-F6FC5975DC81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Site.Infrastructure", "Site.Infrastructure\Site.Infrastructure.csproj", "{2F704DC1-F562-4DFD-BB07-330163A6D58F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site.Infrastructure", "Site.Infrastructure\Site.Infrastructure.csproj", "{2F704DC1-F562-4DFD-BB07-330163A6D58F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Site.Persistance", "Site.Persistance\Site.Persistance.csproj", "{F077DEAE-D19D-4E7A-9D9A-421A9B12C14B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site.Persistance", "Site.Persistance\Site.Persistance.csproj", "{F077DEAE-D19D-4E7A-9D9A-421A9B12C14B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersianTranslation", "PersianTranslation\PersianTranslation.csproj", "{C82CDB62-13C7-404A-B284-45AD2A526405}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{F077DEAE-D19D-4E7A-9D9A-421A9B12C14B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F077DEAE-D19D-4E7A-9D9A-421A9B12C14B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F077DEAE-D19D-4E7A-9D9A-421A9B12C14B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C82CDB62-13C7-404A-B284-45AD2A526405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C82CDB62-13C7-404A-B284-45AD2A526405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C82CDB62-13C7-404A-B284-45AD2A526405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C82CDB62-13C7-404A-B284-45AD2A526405}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

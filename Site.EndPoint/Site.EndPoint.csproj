@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PersianTranslation\PersianTranslation.csproj" />
     <ProjectReference Include="..\Site.Common\Site.Common.csproj" />
     <ProjectReference Include="..\Site.Persistance\Site.Persistance.csproj" />
   </ItemGroup>

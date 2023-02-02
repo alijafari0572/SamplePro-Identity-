@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using PersianTranslation.Identity;
 using Site.Common.Identity;
 using Site.Persistance.Contexts;
 using System.Configuration;
@@ -32,14 +33,15 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     .AddRoles<IdentityRole>()
     .AddRoleManager<RoleManager<IdentityRole>>()
     .AddEntityFrameworkStores<DataBaseContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+.AddErrorDescriber<PersianIdentityErrorDescriber>();
 builder.Services.AddMvc();
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypeStore.Admin,true.ToString()));
+    options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypeStore.Admin, true.ToString()));
 });
 
 var app = builder.Build();

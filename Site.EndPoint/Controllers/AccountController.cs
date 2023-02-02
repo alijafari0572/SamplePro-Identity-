@@ -41,7 +41,12 @@ namespace Site.EndPoint.Controllers
                 UserNameOrEmail=model.UserName,
                 Password=model.Password
                 };
+                TempData["message1"] = "سپاس ثبت نام شما انجام شد. لطفا وارد شوید...";
                 return RedirectToAction("Login", "Account",login);
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
             }
 
             return View(model);
@@ -58,12 +63,22 @@ namespace Site.EndPoint.Controllers
             {
                 return View();
             }
-            var result = await signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, true, true);
+            var user = model.UserNameOrEmail;
+            if (model.UserNameOrEmail.Contains("@"))
+            {
+                var useremail = await userManager.FindByEmailAsync(model.UserNameOrEmail);
+                if (useremail != null)
+                {
+                  user = useremail.UserName;
+                }
+            }
+            var result = await signInManager.PasswordSignInAsync(user, model.Password, true, true);
             if (result.Succeeded)
             {
                 return RedirectToAction("index", "Home");
             }
-            return View();
+                ModelState.AddModelError("", "رمز یا نام کاربری اشتباه است");
+            return View(model);
         }
 
         //[HttpPost]
