@@ -2,6 +2,7 @@
 @using Newtonsoft.Json;
 @using Microsoft.AspNetCore.Http;
 @using System.Data
+@using Site.Common.Identity
 @inject IHttpContextAccessor httpContexAccessor
 @inject UserManager<IdentityUser> usermanager
 @inject SignInManager<IdentityUser> SignInManager
@@ -38,9 +39,12 @@
                         {
                             var user = await usermanager.FindByNameAsync(User.Identity.Name);
                             <li class="nav-item"><a class="nav-link text-dark" >@user.UserName</a></li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="ManageUser" asp-action="Index" >مدیریت</a>
+                            @if (User.HasClaim(ClaimTypeStore.Admin,true.ToString()))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="ManageUser" asp-action="Index">مدیریت</a>
                                 </li>
+                            }
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Account" asp-action="LogOut" method="post"><i class="icon-user"></i>خروج</a>
                             </li>

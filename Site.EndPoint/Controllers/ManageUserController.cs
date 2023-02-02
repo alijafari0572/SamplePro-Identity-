@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Site.Common.Identity;
 using Site.EndPoint.Models.UserManager;
@@ -6,6 +7,8 @@ using System.Security.Claims;
 
 namespace Site.EndPoint.Controllers
 {
+    [Authorize(Policy = "Admin")]
+
     public class ManageUserController : Controller
     {
         private UserManager<IdentityUser> userManager;
@@ -51,11 +54,6 @@ namespace Site.EndPoint.Controllers
 
             if (result.Succeeded) return RedirectToAction("index");
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
             return View(model);
         }
 
@@ -83,12 +81,6 @@ namespace Site.EndPoint.Controllers
             var result = await userManager.RemoveClaimsAsync(user, requestClaims);
 
             if (result.Succeeded) return RedirectToAction("index");
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
             return View(model);
         }
 

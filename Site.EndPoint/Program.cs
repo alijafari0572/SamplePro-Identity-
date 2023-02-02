@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Site.Common.Identity;
 using Site.Persistance.Contexts;
 using System.Configuration;
 using System.Data;
@@ -35,6 +36,11 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 builder.Services.AddMvc();
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypeStore.Admin,true.ToString()));
+});
 
 var app = builder.Build();
 
