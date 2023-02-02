@@ -4,6 +4,8 @@
     {
         #region Constructor
 
+
+
         public AddorRemoveUserClaims_ViewModel()
         {
             UserClaims = new List<ClaimsViewModel>();

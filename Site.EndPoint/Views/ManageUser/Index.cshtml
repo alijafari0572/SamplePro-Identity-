@@ -19,6 +19,8 @@
                 <td>@item.Email</td>
                 <td>
                     <a asp-controller="ManageUser" asp-action="AddUserClaim" asp-route-id="@item.Id" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">add</a>
+                    <a asp-controller="ManageUser" asp-action="RemoveUserClaim" asp-route-id="@item.Id" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
+
                 </td>
             </tr>
         }
