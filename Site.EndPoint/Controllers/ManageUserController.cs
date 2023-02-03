@@ -29,6 +29,35 @@ namespace Site.EndPoint.Controllers
 
             return View(model);
         }
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return NotFound();
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(string id, string userName)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(userName)) return NotFound();
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+            user.UserName = userName;
+            var result = await userManager.UpdateAsync(user);
+
+            if (result.Succeeded) return RedirectToAction("index");
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(user);
+        }
         public async Task<IActionResult> AddUserClaim(string id)
         {
             if (string.IsNullOrEmpty(id)) return NotFound();
@@ -82,6 +111,18 @@ namespace Site.EndPoint.Controllers
 
             if (result.Succeeded) return RedirectToAction("index");
             return View(model);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return NotFound();
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+            await userManager.DeleteAsync(user);
+
+            return RedirectToAction("Index");
         }
 
     }
