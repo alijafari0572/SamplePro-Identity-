@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Site.EndPoint.Controllers
 {
-    [Authorize(Policy = "Admin")]
+   // [Authorize(Policy = "Admin")]
 
     public class ManageUserController : Controller
     {

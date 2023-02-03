@@ -16,3 +16,30 @@ html {
 body {
   margin-bottom: 60px;
 }
+@font-face {
+    font-family: "secondary-font";
+    src: url("../fonts/sahel-400.eot");
+    src: url("../fonts/sahel-400.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/sahel-400.woff2") format("woff2"),
+        url("../fonts/sahel-400.woff") format("woff"),
+        url("../fonts/sahel-400.ttf") format("truetype");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "secondary-font";
+    src: url("../fonts/sahel-700.eot");
+    src: url("../fonts/sahel-700.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/sahel-700.woff2") format("woff2"), 
+        url("../fonts/sahel-700.woff") format("woff"), 
+        url("../fonts/sahel-700.ttf") format("truetype");
+    font-weight: 700;
+}
+
+
+
+
+body {
+    font-family: 'secondary-font', Arial, sans-serif;
+    font-weight: normal;
+}
