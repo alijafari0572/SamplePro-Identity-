@@ -36,8 +36,9 @@ namespace Site.EndPoint.Controllers
             var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-               
-                TempData["message1"] = "سپاس ثبت نام شما انجام شد. لطفا وارد شوید...";
+
+                TempData["Message"]= "سپاس ثبت نام شما انجام شد. لطفا وارد شوید...";
+                TempData["username"]= user.UserName;
                 return RedirectToAction("Login", "Account");
             }
             foreach (var error in result.Errors)

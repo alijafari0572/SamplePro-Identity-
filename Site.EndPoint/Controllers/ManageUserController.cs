@@ -14,11 +14,14 @@ namespace Site.EndPoint.Controllers
     {
         private UserManager<IdentityUser> userManager;
         private RoleManager<IdentityRole> roleManager;
+        private SignInManager<IdentityUser> signInManager;
         public ManageUserController(UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            SignInManager<IdentityUser> signInManager)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.signInManager = signInManager;
         }
 
         public IActionResult Index()
@@ -38,7 +41,12 @@ namespace Site.EndPoint.Controllers
             if (string.IsNullOrEmpty(id)) return NotFound();
             var user = await userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
-           var model = new EditUser_ViewModel()
+            if (User.Identity.Name == user.UserName)//کاربر وارد شده نتواند خودش را ویرایش کند.
+            {
+                TempData["Message"] = "کاربر وارد شده نمی تواند خودش را ویرایش کند";
+                return RedirectToAction("Index");
+            }
+            var model = new EditUser_ViewModel()
             {
                Id=user.Id,
                 UserName = user.UserName,
@@ -58,7 +66,7 @@ namespace Site.EndPoint.Controllers
             var user = await userManager.FindByIdAsync(model.Id);
             if (user == null) return NotFound();
             user.UserName = model.UserName;
-            user.Email= model.Email;
+            user.Email = model.Email;
             var result = await userManager.UpdateAsync(user);
 
             if (result.Succeeded) return RedirectToAction("index");
@@ -76,8 +84,12 @@ namespace Site.EndPoint.Controllers
             if (string.IsNullOrEmpty(id)) return NotFound();
             var user = await userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
+            if (User.Identity.Name==user.UserName)//کاربر وارد شده نتواند خودش را پاک کند.
+            {
+                TempData["Message"] =  "کاربر وارد شده نمی تواند خودش را پاک کند";
+                return RedirectToAction("Index");
+            }
             await userManager.DeleteAsync(user);
-
             return RedirectToAction("Index");
         }
 
