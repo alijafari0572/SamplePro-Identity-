@@ -55,7 +55,6 @@ namespace Site.EndPoint.Controllers
             {
                 return View(model);
             }
-            //if (string.IsNullOrEmpty(model.Id) || string.IsNullOrEmpty(model.UserName)) return NotFound();
             var user = await userManager.FindByIdAsync(model.Id);
             if (user == null) return NotFound();
             user.UserName = model.UserName;
@@ -93,15 +92,15 @@ namespace Site.EndPoint.Controllers
                 .Select(r => r.Name).ToList();
             var userRoles = await userManager.GetRolesAsync(user);
             var validRoles = roles.Where(r => !userRoles.Contains(r))
-                .Select(r => new UserRolesViewModel(r)).ToList();
-            var model = new AddUserToRoleViewModel(id, validRoles);
+                .Select(r => new UserRoles_ViewModel(r)).ToList();
+            var model = new AddUserToRole_ViewModel(id, validRoles);
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddUserToRole(AddUserToRoleViewModel model)
+        public async Task<IActionResult> AddUserToRole(AddUserToRole_ViewModel model)
         {
             if (model == null) return NotFound();
             var user = await userManager.FindByIdAsync(model.UserId);
@@ -129,14 +128,14 @@ namespace Site.EndPoint.Controllers
             if (user == null) return NotFound();
 
             var userRoles = await userManager.GetRolesAsync(user);
-            var validRoles = userRoles.Select(r => new UserRolesViewModel(r)).ToList();
-            var model = new AddUserToRoleViewModel(id, validRoles);
+            var validRoles = userRoles.Select(r => new UserRoles_ViewModel(r)).ToList();
+            var model = new AddUserToRole_ViewModel(id, validRoles);
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveUserFromRole(AddUserToRoleViewModel model)
+        public async Task<IActionResult> RemoveUserFromRole(AddUserToRole_ViewModel model)
         {
             if (model == null) return NotFound();
             var user = await userManager.FindByIdAsync(model.UserId);
@@ -163,7 +162,8 @@ namespace Site.EndPoint.Controllers
             if (user == null) return NotFound();
             var allclaims = ClaimStore.AllClaims;
             var userClaims = await userManager.GetClaimsAsync(user);
-            var validclaims = allclaims.Where(c => userClaims.All(l => (l.Type != c.Type))).Select(c => new ClaimsViewModel(c.Type)).ToList();
+            var validclaims = allclaims.Where(c => userClaims.All(l => (l.Type != c.Type)))
+                .Select(c => new Claims_ViewModel(c.Type)).ToList();
             var model = new AddorRemoveUserClaims_ViewModel(id, validclaims);
             return View(model);
         }
@@ -190,7 +190,7 @@ namespace Site.EndPoint.Controllers
             var user = await userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
             var userClaims = await userManager.GetClaimsAsync(user);
-            var validclaims = userClaims.Select(c => new ClaimsViewModel(c.Type)).ToList();
+            var validclaims = userClaims.Select(c => new Claims_ViewModel(c.Type)).ToList();
             var model = new AddorRemoveUserClaims_ViewModel(id, validclaims);
             return View(model);
         }

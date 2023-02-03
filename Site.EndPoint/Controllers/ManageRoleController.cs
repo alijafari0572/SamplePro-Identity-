@@ -31,7 +31,6 @@ namespace Site.EndPoint.Controllers
             {
                 return View(model);
             }
-            //if (string.IsNullOrEmpty(name)) return NotFound();
             var role = new IdentityRole(model.Name);
             var result = await roleManager.CreateAsync(role);
             if (result.Succeeded) return RedirectToAction("Index");
@@ -41,7 +40,7 @@ namespace Site.EndPoint.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
-            return View(role);
+            return View(model);
         }
        
         
@@ -70,8 +69,6 @@ namespace Site.EndPoint.Controllers
             {
                 return View(model);
             }
-            //if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name)) return NotFound();
-
             var role = await roleManager.FindByIdAsync(model.Id);
             if (role == null) return NotFound();
             role.Name = model.Name;
