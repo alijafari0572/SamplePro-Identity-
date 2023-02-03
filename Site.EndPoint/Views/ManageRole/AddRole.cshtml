@@ -1,4 +1,4 @@
-﻿@model Microsoft.AspNetCore.Identity.IdentityRole
+﻿@model AddRole_ViewModel
 @{
     ViewData["Title"] = "AddRole";
 }
@@ -10,7 +10,15 @@
     <div class="form-group">
         <label class="control-label">Name :</label>
         <input class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
     </div>
 
     <button class="btn btn-primary" type="submit">Submit</button>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,4 +1,4 @@
-﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+﻿@model EditUser_ViewModel
 @{
     ViewData["Title"] = "EditUser";
 }
@@ -10,10 +10,25 @@
 
     <div class="form-group">
         <label class="control-label" asp-for="UserName"></label>
-        <input class="form-control" asp-for="UserName" />
+        <input class="form-control" asp-for="UserName"  value="@Model.UserName"/>
+        <span asp-validation-for="UserName" class="text-danger"></span>
+
+    </div>
+    <div class="form-group">
+        <label class="control-label" asp-for="Email"></label>
+        <input class="form-control" asp-for="Email"  value="@Model.Email"/>
+        <span asp-validation-for="Email" class="text-danger"></span>
+
     </div>
 
     <input type="hidden" asp-for="Id" />
 
     <button class="btn btn-primary" type="submit">Submit</button>
 </form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

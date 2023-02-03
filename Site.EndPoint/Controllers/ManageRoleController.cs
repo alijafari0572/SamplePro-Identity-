@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Site.EndPoint.Models.Role;
+using Site.EndPoint.Models.UserManager;
 
 namespace Site.EndPoint.Controllers
 {
@@ -23,10 +25,14 @@ namespace Site.EndPoint.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddRole(string name)
+        public async Task<IActionResult> AddRole(AddRole_ViewModel model)
         {
-            if (string.IsNullOrEmpty(name)) return NotFound();
-            var role = new IdentityRole(name);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            //if (string.IsNullOrEmpty(name)) return NotFound();
+            var role = new IdentityRole(model.Name);
             var result = await roleManager.CreateAsync(role);
             if (result.Succeeded) return RedirectToAction("Index");
 
@@ -48,28 +54,35 @@ namespace Site.EndPoint.Controllers
             var role = await roleManager.FindByIdAsync(id);
 
             if (role == null) return NotFound();
-
-            return View(role);
+            var model = new EditRole_ViewModel ()
+            {
+             Id=id,
+             Name=role.Name
+            };
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditRole(string id, string name)
+        public async Task<IActionResult> EditRole(EditRole_ViewModel model)
         {
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name)) return NotFound();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            //if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name)) return NotFound();
 
-            var role = await roleManager.FindByIdAsync(id);
+            var role = await roleManager.FindByIdAsync(model.Id);
             if (role == null) return NotFound();
-            role.Name = name;
+            role.Name = model.Name;
             var result = await roleManager.UpdateAsync(role);
             if (result.Succeeded) return RedirectToAction("Index");
-
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                ModelState.AddModelError("", error.Description);
             }
 
-            return View(role);
+            return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

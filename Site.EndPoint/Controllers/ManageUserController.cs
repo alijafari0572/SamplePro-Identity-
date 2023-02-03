@@ -38,28 +38,38 @@ namespace Site.EndPoint.Controllers
             if (string.IsNullOrEmpty(id)) return NotFound();
             var user = await userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
-
-            return View(user);
+           var model = new EditUser_ViewModel()
+            {
+               Id=user.Id,
+                UserName = user.UserName,
+                Email = user.Email
+            };
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(string id, string userName)
+        public async Task<IActionResult> EditUser(EditUser_ViewModel model)
         {
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(userName)) return NotFound();
-            var user = await userManager.FindByIdAsync(id);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            //if (string.IsNullOrEmpty(model.Id) || string.IsNullOrEmpty(model.UserName)) return NotFound();
+            var user = await userManager.FindByIdAsync(model.Id);
             if (user == null) return NotFound();
-            user.UserName = userName;
+            user.UserName = model.UserName;
+            user.Email= model.Email;
             var result = await userManager.UpdateAsync(user);
 
             if (result.Succeeded) return RedirectToAction("index");
 
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                ModelState.AddModelError("", error.Description);
             }
 
-            return View(user);
+            return View(model);
         }
         [HttpGet]
         public async Task<IActionResult> DeleteUser(string id)

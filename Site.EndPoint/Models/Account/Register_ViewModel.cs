@@ -6,26 +6,24 @@ namespace Site.EndPoint.Models.Account
 {
     public class Register_ViewModel
     {
-        [Required]
         [Display(Name = "نام کاربری")]
-        //[Remote("IsUserInUse", "Account")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [Display(Name = "ایمیل")]
         [EmailAddress]
-        // [Remote("IsEmailInUse", "Account")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [Display(Name = "رمز عبور")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [Display(Name = "تکرار رمز عبور")]
         [DataType(DataType.Password)]
-        [Compare(nameof(Password))]
+        [Compare(nameof(Password), ErrorMessage ="تکرار رمز عبور و رمز عبور تطابق ندارند")]
         public string ConfirmPassword { get; set; }
     }
 }
