@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Site.Common.Identity;
 using Site.EndPoint.Models.UserManager;
 using System.Security.Claims;
@@ -12,10 +13,12 @@ namespace Site.EndPoint.Controllers
     public class ManageUserController : Controller
     {
         private UserManager<IdentityUser> userManager;
-
-        public ManageUserController(UserManager<IdentityUser> userManager)
+        private RoleManager<IdentityRole> roleManager;
+        public ManageUserController(UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         public IActionResult Index()
@@ -58,6 +61,91 @@ namespace Site.EndPoint.Controllers
 
             return View(user);
         }
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return NotFound();
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+            await userManager.DeleteAsync(user);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddUserToRole(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return NotFound();
+
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+            var roles = roleManager.Roles.AsTracking()
+                .Select(r => r.Name).ToList();
+            var userRoles = await userManager.GetRolesAsync(user);
+            var validRoles = roles.Where(r => !userRoles.Contains(r))
+                .Select(r => new UserRolesViewModel(r)).ToList();
+            var model = new AddUserToRoleViewModel(id, validRoles);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddUserToRole(AddUserToRoleViewModel model)
+        {
+            if (model == null) return NotFound();
+            var user = await userManager.FindByIdAsync(model.UserId);
+            if (user == null) return NotFound();
+            var requestRoles = model.UserRoles.Where(r => r.IsSelected)
+                .Select(u => u.RoleName)
+                .ToList();
+            var result = await userManager.AddToRolesAsync(user, requestRoles);
+
+            if (result.Succeeded) return RedirectToAction("index");
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RemoveUserFromRole(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return NotFound();
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var userRoles = await userManager.GetRolesAsync(user);
+            var validRoles = userRoles.Select(r => new UserRolesViewModel(r)).ToList();
+            var model = new AddUserToRoleViewModel(id, validRoles);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveUserFromRole(AddUserToRoleViewModel model)
+        {
+            if (model == null) return NotFound();
+            var user = await userManager.FindByIdAsync(model.UserId);
+            if (user == null) return NotFound();
+            var requestRoles = model.UserRoles.Where(r => r.IsSelected)
+                .Select(u => u.RoleName)
+                .ToList();
+            var result = await userManager.RemoveFromRolesAsync(user, requestRoles);
+
+            if (result.Succeeded) return RedirectToAction("index");
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(model);
+        }
+
         public async Task<IActionResult> AddUserClaim(string id)
         {
             if (string.IsNullOrEmpty(id)) return NotFound();
@@ -112,18 +200,5 @@ namespace Site.EndPoint.Controllers
             if (result.Succeeded) return RedirectToAction("index");
             return View(model);
         }
-
-
-        [HttpGet]
-        public async Task<IActionResult> DeleteUser(string id)
-        {
-            if (string.IsNullOrEmpty(id)) return NotFound();
-            var user = await userManager.FindByIdAsync(id);
-            if (user == null) return NotFound();
-            await userManager.DeleteAsync(user);
-
-            return RedirectToAction("Index");
-        }
-
     }
 }

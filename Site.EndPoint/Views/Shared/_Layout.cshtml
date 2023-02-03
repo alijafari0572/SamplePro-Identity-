@@ -39,10 +39,13 @@
                         {
                             var user = await usermanager.FindByNameAsync(User.Identity.Name);
                             <li class="nav-item"><a class="nav-link text-dark">@user.UserName</a></li>
-                            @if (User.HasClaim(ClaimTypeStore.Admin, true.ToString()))
+                          //  @if (User.HasClaim(ClaimTypeStore.Admin, true.ToString()))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="ManageUser" asp-action="Index">مدیریت</a>
+                                    <a class="nav-link text-dark" asp-controller="ManageUser" asp-action="Index">مدیریت User</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="ManageRole" asp-action="Index">مدیریت Role</a>
                                 </li>
                             }
                             <li class="nav-item">
