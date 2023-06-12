@@ -1,4 +1,4 @@
-﻿namespace Site.EndPoint.Models.UserManager
+﻿namespace Site.Application.DTOs.UserManager
 {
     public class AddUserToRole_ViewModel
     {

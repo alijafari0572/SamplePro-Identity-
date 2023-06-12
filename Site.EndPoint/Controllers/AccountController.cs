@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Site.EndPoint.Models.Account;
+using Site.Application.DTOs.Account;
 
 namespace Site.EndPoint.Controllers
 {

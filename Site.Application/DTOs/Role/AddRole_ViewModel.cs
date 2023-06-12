@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
-namespace Site.EndPoint.Models.Role
+namespace Site.Application.DTOs.Role
 {
     public class AddRole_ViewModel
     {

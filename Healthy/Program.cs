@@ -1,7 +1,47 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Site.Common.Identity;
+using Site.Persistance.Contexts;
+
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddControllers(options =>
+{
+    options.ReturnHttpNotAcceptable = true;
+})
+    .AddNewtonsoftJson()
+    .AddXmlDataContractSerializerFormatters();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 // Add services to the container.
-
+builder.Services.AddDbContext<DataBaseContext>(options =>
+{
+    options.UseSqlServer
+    ("Server=.;Database=SamplePro;trusted_connection=true;TrustServerCertificate=True;MultipleActiveResultSets=true;");
+});
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    //configure identity options
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredUniqueChars = 0;
+    options.Password.RequiredLength = 4;
+    options.User.RequireUniqueEmail = true;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+})
+     .AddUserManager<UserManager<IdentityUser>>()
+    .AddRoles<IdentityRole>()
+    .AddRoleManager<RoleManager<IdentityRole>>()
+    .AddEntityFrameworkStores<DataBaseContext>()
+    .AddDefaultTokenProviders();
+builder.Services.AddMvc();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypeStore.Admin, true.ToString()));
+});
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -17,9 +57,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();

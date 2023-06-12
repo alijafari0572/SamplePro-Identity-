@@ -1,4 +1,4 @@
-namespace Site.EndPoint.Models
+namespace Site.Application.DTOs.Error
 {
     public class ErrorViewModel
     {

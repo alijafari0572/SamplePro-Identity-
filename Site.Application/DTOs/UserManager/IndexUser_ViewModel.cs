@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
-namespace Site.EndPoint.Models.UserManager
+namespace Site.Application.DTOs.UserManager
 {
     public class IndexUser_ViewModel
     {

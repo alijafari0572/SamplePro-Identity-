@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Site.EndPoint.Models.Account
+namespace Site.Application.DTOs.Account
 {
     public class Register_ViewModel
     {

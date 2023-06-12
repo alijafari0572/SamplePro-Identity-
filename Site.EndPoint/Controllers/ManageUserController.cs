@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Site.Application.DTOs.UserManager;
 using Site.Common.Identity;
-using Site.EndPoint.Models.UserManager;
 using System.Security.Claims;
 
 namespace Site.EndPoint.Controllers

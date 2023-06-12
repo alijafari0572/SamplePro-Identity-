@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Site.EndPoint.Models;
 using System.Diagnostics;
+using Site.Application.DTOs.Error;
 
 namespace Site.EndPoint.Controllers
 {

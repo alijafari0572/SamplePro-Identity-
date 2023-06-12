@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
-namespace Site.EndPoint.Models.Account
+namespace Site.Application.DTOs.Account
 {
     public class Login_ViewModel
     {

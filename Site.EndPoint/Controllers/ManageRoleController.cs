@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Site.EndPoint.Models.Role;
-using Site.EndPoint.Models.UserManager;
+using Site.Application.DTOs.Role;
 
 namespace Site.EndPoint.Controllers
 {

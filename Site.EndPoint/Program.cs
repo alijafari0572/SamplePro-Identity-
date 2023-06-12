@@ -15,7 +15,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DataBaseContext>(options =>
 {
     options.UseSqlServer
-    ("Server=.;Database=SamplePro;trusted_connection=true;MultipleActiveResultSets=true;");
+    ("Server=.;Database=SamplePro;trusted_connection=true;TrustServerCertificate=True;MultipleActiveResultSets=true;");
 });
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {

@@ -25,8 +25,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PersianTranslation\PersianTranslation.csproj" />
+    <ProjectReference Include="..\Site.Application\Site.Application.csproj" />
     <ProjectReference Include="..\Site.Common\Site.Common.csproj" />
     <ProjectReference Include="..\Site.Persistance\Site.Persistance.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

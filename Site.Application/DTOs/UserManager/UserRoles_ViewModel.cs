@@ -1,7 +1,5 @@
-﻿namespace Site.EndPoint.Models.UserManager
-{
-   
-
+﻿namespace Site.Application.DTOs.UserManager 
+{ 
     public class UserRoles_ViewModel
     {
 
