@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Site.Application.Contracts.Infrastructure;
 using Site.Application.DTOs.Account;
 using Site.Infrastructure.GenerateCode;
+using Site.Infrastructure.Mail;
 
 namespace Healthy.Controllers
 {
@@ -13,12 +15,14 @@ namespace Healthy.Controllers
     {
         private UserManager<IdentityUser> userManager;
         private SignInManager<IdentityUser> signInManager;
-
+        private IEmailSender _emailSender;
         public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IEmailSender emailSender)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            _emailSender = emailSender;
         }
 
         [HttpPost("Register")]
@@ -47,7 +51,7 @@ namespace Healthy.Controllers
                 //  new { username = user.UserName, token = emailConfirmationToken },
                 //  Request.Scheme);
                 //await _messageSender.SendEmailAsync(model.Email, "Email confirmation", emailMessage);
-                return Ok(new { res = 1 , msg = "Account Created" , err = ""});
+                return Ok(new { res = 1, msg = "Account Created", err = "" });
             }
             return Ok(new { res = 0, msg = "Error", err = result.Errors.ToList() });
         }
@@ -97,16 +101,20 @@ namespace Healthy.Controllers
                 //    ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
                 //};
 
-              //  ViewData["ErrorMessage"] = "اگر ایمیل وارد معتبر باشد، لینک فراموشی رمزعبور به ایمیل شما ارسال شد";
-
+                //  ViewData["ErrorMessage"] = "اگر ایمیل وارد معتبر باشد، لینک فراموشی رمزعبور به ایمیل شما ارسال شد";
+                Random _random = new Random();
+                var code=new Random().Next(100000,999999);
                 var user = await userManager.FindByEmailAsync(model.Email);
                 if (user == null) return Ok(new { res = 1, msg = "Email Sent", err = "" });
                 var resetPasswordToken = await userManager.GeneratePasswordResetTokenAsync(user);
-                var resetPasswordUrl = Url.Action("ResetPassword", "Account",
-                    new { email = user.Email, token = resetPasswordToken }, Request.Scheme);
+                //string resetPasswordUrl = Url.Page("/Identity/Account/ResetPassword", pageHandler: null,values : 
+                  //  new { code },protocol : Request.Scheme , "localhost:7012");
 
-               // await _messageSender.SendEmailAsync(user.Email, "reset password link", resetPasswordUrl);
-
+               var result= await userManager.ResetPasswordAsync(user, resetPasswordToken,code.ToString());
+                if (result.Succeeded)
+                {
+                    await _emailSender.SendEmailAsync(user.Email, "reset password link", code.ToString());
+                }
                 //return View("Login", loginViewModel);
             }
             return Ok();
@@ -117,7 +125,6 @@ namespace Healthy.Controllers
         //{
         //    if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(token))
         //        return RedirectToAction("Index", "Home");
-
         //    var model = new ResetPassword_ViewModel()
         //    {
         //        Email = email,

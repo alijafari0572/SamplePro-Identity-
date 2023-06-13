@@ -93,5 +93,18 @@ namespace Site.EndPoint.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(token))
+                return RedirectToAction("Index", "Home");
+            var model = new ResetPassword_ViewModel()
+            {
+                Email = email,
+                Token = token
+            };
+
+            return View(model);
+        }
     }
 }

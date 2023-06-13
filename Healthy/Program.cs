@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Site.Common.Identity;
 using Site.Persistance.Contexts;
+using Site.Infrastructure;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Site.Application.Contracts.Infrastructure;
+using Site.Infrastructure.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
@@ -10,6 +14,12 @@ builder.Services.AddControllers(options =>
 })
     .AddNewtonsoftJson()
     .AddXmlDataContractSerializerFormatters();
+
+builder.Services.ConfigureInfrastracturServices(builder.Configuration);
+
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Add services to the container.

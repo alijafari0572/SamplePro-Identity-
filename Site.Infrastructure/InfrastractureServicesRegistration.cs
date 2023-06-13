@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Site.Application.Contracts.Infrastructure;
 
 namespace Site.Infrastructure
 {
@@ -16,7 +17,8 @@ namespace Site.Infrastructure
         public static IServiceCollection ConfigureInfrastracturServices(this IServiceCollection services,
         IConfiguration configuration)
         {
-           // services.Configure<EmailSetting>(configuration.GetSection("EmailSettings"));
+            services.Configure<EmailSetting>(configuration.GetSection("EmailSettings"));
+
             services.AddTransient<IEmailSender, EmailSender>();
 
             return services;

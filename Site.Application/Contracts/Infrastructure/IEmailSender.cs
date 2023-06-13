@@ -9,7 +9,6 @@ namespace Site.Application.Contracts.Infrastructure
 {
     public interface IEmailSender
     {
-        Task<bool> SendEmail(Email email);
-        
+        public Task SendEmailAsync(string toEmail, string subject, string message, bool isMessageHtml = false);
     }
 }

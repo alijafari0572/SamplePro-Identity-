@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("DataBaseContextConnection") ?? throw new InvalidOperationException("Connection string 'DataBaseContextConnection' not found.");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<DataBaseContext>(options =>
     options.UseSqlServer
     ("Server=.;Database=SamplePro;trusted_connection=true;TrustServerCertificate=True;MultipleActiveResultSets=true;");
 });
+
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     //configure identity options
@@ -29,9 +31,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.User.RequireUniqueEmail = true;
     options.SignIn.RequireConfirmedPhoneNumber = false;
 })
-    .AddUserManager<UserManager<IdentityUser>>()
-    .AddRoles<IdentityRole>()
-    .AddRoleManager<RoleManager<IdentityRole>>()
+    //.AddUserManager<UserManager<IdentityUser>>()
+    //.AddRoles<IdentityRole>()
+    //.AddRoleManager<RoleManager<IdentityRole>>()
     .AddEntityFrameworkStores<DataBaseContext>()
     .AddDefaultTokenProviders()
 .AddErrorDescriber<PersianIdentityErrorDescriber>();
@@ -64,5 +66,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.MapRazorPages();
 app.Run();

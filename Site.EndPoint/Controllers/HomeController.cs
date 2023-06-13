@@ -15,7 +15,8 @@ namespace Site.EndPoint.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Identity/Account/ResetPassword");
+           // return View();
         }
 
         public IActionResult Privacy()
