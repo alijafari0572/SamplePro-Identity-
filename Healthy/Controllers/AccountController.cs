@@ -113,7 +113,7 @@ namespace Healthy.Controllers
                var result= await userManager.ResetPasswordAsync(user, resetPasswordToken,code.ToString());
                 if (result.Succeeded)
                 {
-                    await _emailSender.SendEmailAsync(user.Email, "reset password link", code.ToString());
+                    await _emailSender.SendEmailAsync(user.Email, "You'er new Password", code.ToString());
                 }
                 //return View("Login", loginViewModel);
             }
